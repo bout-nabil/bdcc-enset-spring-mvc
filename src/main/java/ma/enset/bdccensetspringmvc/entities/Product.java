@@ -16,12 +16,12 @@ import lombok.*;
 @ToString
 @Builder
 public class Product {
-    @Id @GeneratedValue
+    @Id @GeneratedValue // Use @GeneratedValue to auto-generate the ID
     private Long id;
-    @NotEmpty
-    @Size(min = 2, max = 50)
+    @NotEmpty // Use @NotEmpty to ensure the name is not empty
+    @Size(min = 2, max = 50) // Use @Size to enforce a minimum and maximum length for the name
     private String name;
-    @Min(0)
+    @Min(0) // Use @Min to ensure the price is not negative
     private double price;
     @Min(0)
     private double quantity;
@@ -29,5 +29,4 @@ public class Product {
     @Min(0)
     private int stocked;
     private boolean selected;
-
 }
