@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .build(),
                 User.withUsername("aboutachrafine")
                         .password(passwordEncoder().encode("2020"))
-                        .roles("USER,ADMIN")
+                        .roles("USER","ADMIN")
                         .build()
         );
     }
@@ -46,6 +46,8 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/public/**").permitAll()
                                 .anyRequest().authenticated())
+                .exceptionHandling(eh->
+                        eh.accessDeniedPage("/notAuthorized"))
                 .build();
     }
 }

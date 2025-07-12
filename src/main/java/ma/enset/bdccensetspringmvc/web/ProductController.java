@@ -59,4 +59,9 @@ public class ProductController {
         model.addAttribute("productList", productList); // Add the updated list to the model
         return "redirect:/user/index"; // Redirect to the index page after saving the product
     }
+
+    @GetMapping("/notAuthorized")
+    public String notAuthorized() {
+        return "notAuthorized";
+    }
 }
