@@ -1,11 +1,15 @@
 package ma.enset.bdccensetspringmvc.web;
 
+import jakarta.validation.Valid;
 import ma.enset.bdccensetspringmvc.entities.Product;
 import ma.enset.bdccensetspringmvc.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -30,11 +34,28 @@ public class ProductController {
         return "redirect:/index"; // Redirect to the index page when accessing the root URL
     }
 
-    @GetMapping("/delete") // This method maps the "/delete" URL to the deleteProduct method)
+    @GetMapping("/delete") // This method maps the "/delete" URL to the deleteProduct method
     public String deleteProduct(@RequestParam(name = "id") Long id, Model model) {
         productRepository.deleteById(id); // Delete the product by its ID
         List<Product> productList = productRepository.findAll(); // Retrieve the updated list of products
         model.addAttribute("productList", productList); // Add the updated list to the model
         return "redirect:/index"; // Redirect to the index page after deletion
+    }
+
+    @GetMapping("/addProduct") // This method maps the "/addProduct" URL to the addProduct method
+    public String addProduct(Model model) {
+        model.addAttribute("product", new Product()); // Add a new Product object to the model
+        return "new-product"; // Return the view name for adding a product
+    }
+
+    @PostMapping("/saveProduct") // This method maps the "/saveProduct" URL to the saveProduct method
+    public String saveProduct(@Valid Product product, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "new-product"; // If there are validation errors, return to the new-product view
+        }
+        productRepository.save(product); // Save the product to the repository
+        List<Product> productList = productRepository.findAll(); // Retrieve the updated list of products
+        model.addAttribute("productList", productList); // Add the updated list to the model
+        return "redirect:/index"; // Redirect to the index page after saving the product
     }
 }

@@ -26,7 +26,7 @@ public class Product {
     @Min(0)
     private double quantity;
     private String description;
-    @Min(0)
+    @Min(1)
     private int stocked;
     private boolean selected;
 }
