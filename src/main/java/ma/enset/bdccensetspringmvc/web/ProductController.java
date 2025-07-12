@@ -25,6 +25,11 @@ public class ProductController {
         return "products"; // This method returns the name of the view to be rendered
     }
 
+    @GetMapping("/") // This method maps the root URL ("/") to the home method
+    public String home() {
+        return "redirect:/index"; // Redirect to the index page when accessing the root URL
+    }
+
     @GetMapping("/delete") // This method maps the "/delete" URL to the deleteProduct method)
     public String deleteProduct(@RequestParam(name = "id") Long id, Model model) {
         productRepository.deleteById(id); // Delete the product by its ID
