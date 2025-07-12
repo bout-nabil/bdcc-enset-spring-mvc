@@ -22,33 +22,34 @@ public class ProductController {
 //    public ProductController(IProductRepository productRepository) {
 //        this.productRepository = productRepository;
 //    }
-    @GetMapping("/index") // This method maps the "/products" URL to the index method
+
+    @GetMapping("/") // This method maps the root URL ("/") to the home method
+    public String home() {
+        return "redirect:/user/index"; // Redirect to the index page when accessing the root URL
+    }
+
+    @GetMapping("/user/index") // This method maps the "/products" URL to the index method
     public String index(Model model) {
         List<Product> productList = productRepository.findAll();
         model.addAttribute("productList", productList); // Add the list of products to the model
         return "products"; // This method returns the name of the view to be rendered
     }
 
-    @GetMapping("/") // This method maps the root URL ("/") to the home method
-    public String home() {
-        return "redirect:/index"; // Redirect to the index page when accessing the root URL
-    }
-
-    @GetMapping("/delete") // This method maps the "/delete" URL to the deleteProduct method
+    @GetMapping("/admin/delete") // This method maps the "/delete" URL to the deleteProduct method
     public String deleteProduct(@RequestParam(name = "id") Long id, Model model) {
         productRepository.deleteById(id); // Delete the product by its ID
         List<Product> productList = productRepository.findAll(); // Retrieve the updated list of products
         model.addAttribute("productList", productList); // Add the updated list to the model
-        return "redirect:/index"; // Redirect to the index page after deletion
+        return "redirect:/user/index"; // Redirect to the index page after deletion
     }
 
-    @GetMapping("/addProduct") // This method maps the "/addProduct" URL to the addProduct method
+    @GetMapping("/admin/addProduct") // This method maps the "/addProduct" URL to the addProduct method
     public String addProduct(Model model) {
         model.addAttribute("product", new Product()); // Add a new Product object to the model
         return "new-product"; // Return the view name for adding a product
     }
 
-    @PostMapping("/saveProduct") // This method maps the "/saveProduct" URL to the saveProduct method
+    @PostMapping("/admin/saveProduct") // This method maps the "/saveProduct" URL to the saveProduct method
     public String saveProduct(@Valid Product product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "new-product"; // If there are validation errors, return to the new-product view
@@ -56,6 +57,6 @@ public class ProductController {
         productRepository.save(product); // Save the product to the repository
         List<Product> productList = productRepository.findAll(); // Retrieve the updated list of products
         model.addAttribute("productList", productList); // Add the updated list to the model
-        return "redirect:/index"; // Redirect to the index page after saving the product
+        return "redirect:/user/index"; // Redirect to the index page after saving the product
     }
 }
