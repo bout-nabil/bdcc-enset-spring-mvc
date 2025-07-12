@@ -40,7 +40,7 @@ public class ProductController {
         productRepository.deleteById(id); // Delete the product by its ID
         List<Product> productList = productRepository.findAll(); // Retrieve the updated list of products
         model.addAttribute("productList", productList); // Add the updated list to the model
-        return "redirect:/index"; // Redirect to the index page after deletion
+        return "redirect:/user/index"; // Redirect to the index page after deletion
     }
 
     @GetMapping("/admin/addProduct") // This method maps the "/addProduct" URL to the addProduct method
